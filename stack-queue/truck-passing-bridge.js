@@ -36,10 +36,10 @@ bridge_length	weight	truck_weights	                    return
 
 module.exports.solution = (bridge_length, weight, truck_weights) => {
   let time = 0;
+  let waitingTrucks = [...truck_weights];
   let passingBridgeTrucks = [];
-  const countTrucks = truck_weights.length;
   let passedTrucks = [];
-  while (countTrucks > passedTrucks.length) {
+  while (truck_weights.length > passedTrucks.length) {
     // 다리를 모두 지난 트럭은 passingBridgeTrucks에서 제거합니다.
     passedTrucks = passedTrucks.concat(
       passingBridgeTrucks.filter(truck => truck.time >= bridge_length)
@@ -50,13 +50,16 @@ module.exports.solution = (bridge_length, weight, truck_weights) => {
     const currentBridgeWeight = passingBridgeTrucks
       .reduce((acc, truck) => acc + truck.weight, 0);
 
-    const nextTruckWeight = (truck_weights.length) ? truck_weights[0] : weight;
+    const nextTruckWeight = (waitingTrucks.length) ? waitingTrucks[0] : 0;
 
     // 현재 다리를 지나고 있는 트럭의 무게와, 다음 트럭이 다리에 진입할 수 있는지 확인합니다.
     // 통과가 가능하면 다음 트럭을 다리에 진입시킵니다.
-    if (currentBridgeWeight + nextTruckWeight <= weight && passingBridgeTrucks.length < bridge_length) {
-      passingBridgeTrucks.push({ weight: truck_weights[0], time: 0 });
-      truck_weights = truck_weights.filter((truck, index) => index > 0);
+    if (currentBridgeWeight + nextTruckWeight <= weight
+      && passingBridgeTrucks.length < bridge_length
+      && waitingTrucks.length > 0
+    ) {
+      passingBridgeTrucks.push({ weight: waitingTrucks[0], time: 0 });
+      waitingTrucks = waitingTrucks.filter((truck, index) => index > 0);
     }
 
     // 각 트럭의 시간을 하나씩 증가시킵니다.
