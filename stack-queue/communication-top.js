@@ -2,7 +2,7 @@
 
 module.exports.solution = (heights) => {
   const answer = [];
-  const findReceiver = (receiveTop) => {
+  function findReceiver(receiveTop) {
     if (receiveTop.length) {
       // 신호를 수신한 탑을 반환합니다.
       return receiveTop.pop().topNumber;
@@ -10,7 +10,7 @@ module.exports.solution = (heights) => {
       // 신호를 수신한 탑이 없으면 0을 반환합니다.
       return 0;
     }
-  };
+  }
 
   heights.forEach((sender, index, srcArray) => {
     // 신호를 수신할 수 있는 탑을 찾습니다.
@@ -23,5 +23,3 @@ module.exports.solution = (heights) => {
   });
   return answer;
 };
-
-
